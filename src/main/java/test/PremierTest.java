@@ -16,8 +16,8 @@ public class PremierTest {
     public static void main (String[] args) {
         DAOFactory factory = new DAOFactory();
         DAOManager dao = factory.createDAOManager();
-        // dao.ImportTeams("C:\\Users\\Eduard Ribas\\IdeaProjects\\M06-A2\\src\\main\\resources\\clubs.csv");
-        // dao.ImportMatches("C:\\Users\\Eduard Ribas\\IdeaProjects\\M06-A2\\src\\main\\resources\\results.csv");
+        //dao.ImportTeams("C:\\Users\\Eduard\\Desktop\\M06-A02-main\\src\\main\\resources\\clubs.csv");
+        //dao.ImportMatches("C:\\Users\\Eduard\\Desktop\\M06-A02-main\\src\\main\\resources\\results.csv");
 
         // Ex_03
         // Team team = dao.GetTeam("ARS");
@@ -26,7 +26,8 @@ public class PremierTest {
         // Ex_04
         // System.out.println(dao.GetTeamAbbreviation("Arsenal"));
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // EX_07
+        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date data = null;
         try {
             data = dateFormat.parse("2022-08-27");
@@ -35,14 +36,11 @@ public class PremierTest {
         }
         java.sql.Date DataSql = new java.sql.Date(data.getTime());
 
-        /* EX_07
         Team team = dao.GetTeam("SOU");
         Team team_2 = dao.GetTeam("MNU");
-        System.out.println(team.toString());
-        System.out.println(team_2.toString());
         Match match = dao.GetMatch(DataSql, team, team_2);
-        System.out.println(match.toString());
-        */
+        System.out.println(match.toString());*/
+
 
         // EX_08
         // System.out.println(dao.HomeGoals());
@@ -56,8 +54,8 @@ public class PremierTest {
 
         for (Match match: matchs) {
             System.out.println(match.toString());
-        }
-        */
+        }*/
+
 
         // EX_11
         // Team team = dao.GetTeam("MNU");
@@ -69,7 +67,5 @@ public class PremierTest {
         for (Team team: teams) {
             System.out.println(team.toString());
         }
-
-
     }
 }

@@ -202,6 +202,8 @@ public class DAOManagerJDBCImpl implements DAOManager {
     // Ex_06 FET
     public void ImportMatches(String fileMatches) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileMatches))) {
+            System.out.println("Hola_1");
+
             String line;
             // Read First Line
             br.readLine();
@@ -216,8 +218,10 @@ public class DAOManagerJDBCImpl implements DAOManager {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
                 LocalTime localTime = LocalTime.parse(tokenizer.nextToken().trim(), formatter);
                 java.sql.Time time = java.sql.Time.valueOf(localTime);
-                String homeTeam = tokenizer.nextToken().trim();
-                String awayTeam = tokenizer.nextToken().trim();
+                String homeTeam = GetTeamAbbreviation(tokenizer.nextToken().trim());
+                System.out.println(homeTeam);
+                String awayTeam = GetTeamAbbreviation(tokenizer.nextToken().trim());
+                System.out.println(awayTeam);
                 int fullTimeHomeGoals = Integer.parseInt(tokenizer.nextToken());
                 int fullTimeAwayGoals = Integer.parseInt(tokenizer.nextToken());
                 String fullTimeResult = tokenizer.nextToken().trim();
@@ -261,8 +265,8 @@ public class DAOManagerJDBCImpl implements DAOManager {
 
             // Set input parameters
             callableStatement.setDate(1, (java.sql.Date) matchDay);
-            callableStatement.setString(2, home.getClub_name());
-            callableStatement.setString(3, away.getClub_name());
+            callableStatement.setString(2, home.getAbv());
+            callableStatement.setString(3, away.getAbv());
 
             // Execute the stored procedure
             result = callableStatement.execute();
@@ -271,31 +275,30 @@ public class DAOManagerJDBCImpl implements DAOManager {
                 // Get Data
                 ResultSet resultSet = callableStatement.getResultSet();
                 if (resultSet.next()) {
-                    int id = resultSet.getInt(1);
-                    String division = resultSet.getString(2);
-                    Date date = resultSet.getDate(3);
-                    Time time = resultSet.getTime(4);
-                    String homeTeam = resultSet.getString(5);
-                    String awayTeam = resultSet.getString(6);
-                    int fullTimeHomeGoals = resultSet.getInt(7);
-                    int fullTimeAwayGoals = resultSet.getInt(8);
-                    String fullTimeResult = resultSet.getString(9);
-                    int halfTimeHomeGoals = resultSet.getInt(10);
-                    int halfTimeAwayGoals = resultSet.getInt(11);
-                    String halfTimeResult = resultSet.getString(12);
-                    String referee = resultSet.getString(13);
-                    int hs = resultSet.getInt(14);
-                    int as = resultSet.getInt(15);
-                    int hst = resultSet.getInt(16);
-                    int ast = resultSet.getInt(17);
-                    int hf = resultSet.getInt(18);
-                    int af = resultSet.getInt(19);
-                    int hc = resultSet.getInt(20);
-                    int ac = resultSet.getInt(21);
-                    int hy = resultSet.getInt(22);
-                    int ay = resultSet.getInt(23);
-                    int hrc = resultSet.getInt(24);
-                    int arc = resultSet.getInt(25);
+                    String division = resultSet.getString(1);
+                    Date date = resultSet.getDate(2);
+                    Time time = resultSet.getTime(3);
+                    String homeTeam = resultSet.getString(4);
+                    String awayTeam = resultSet.getString(5);
+                    int fullTimeHomeGoals = resultSet.getInt(6);
+                    int fullTimeAwayGoals = resultSet.getInt(7);
+                    String fullTimeResult = resultSet.getString(8);
+                    int halfTimeHomeGoals = resultSet.getInt(9);
+                    int halfTimeAwayGoals = resultSet.getInt(10);
+                    String halfTimeResult = resultSet.getString(11);
+                    String referee = resultSet.getString(12);
+                    int hs = resultSet.getInt(13);
+                    int as = resultSet.getInt(14);
+                    int hst = resultSet.getInt(15);
+                    int ast = resultSet.getInt(16);
+                    int hf = resultSet.getInt(17);
+                    int af = resultSet.getInt(18);
+                    int hc = resultSet.getInt(19);
+                    int ac = resultSet.getInt(20);
+                    int hy = resultSet.getInt(21);
+                    int ay = resultSet.getInt(22);
+                    int hrc = resultSet.getInt(23);
+                    int arc = resultSet.getInt(24);
 
                     // Create Team
                     match = new Match(division, date, time, homeTeam, awayTeam, fullTimeHomeGoals, fullTimeAwayGoals, fullTimeResult, halfTimeHomeGoals, halfTimeAwayGoals, halfTimeResult, referee, hs, as, hst, ast, hf, af, hc, ac, hy, ay, hrc, arc);
@@ -382,7 +385,7 @@ public class DAOManagerJDBCImpl implements DAOManager {
             CallableStatement callableStatement = dbConnection.prepareCall(storedProcedure);
 
             // Set input parameters
-            callableStatement.setString(1, oneTeam.getClub_name());
+            callableStatement.setString(1, oneTeam.getAbv());
 
             // Execute the stored procedure
             result = callableStatement.execute();
@@ -391,31 +394,30 @@ public class DAOManagerJDBCImpl implements DAOManager {
                 ResultSet resultSet = callableStatement.getResultSet();
                 while (resultSet.next()) {
                     // Get Result
-                    int id = resultSet.getInt(1);
-                    String division = resultSet.getString(2);
-                    Date date = resultSet.getDate(3);
-                    Time time = resultSet.getTime(4);
-                    String homeTeam = resultSet.getString(5);
-                    String awayTeam = resultSet.getString(6);
-                    int fullTimeHomeGoals = resultSet.getInt(7);
-                    int fullTimeAwayGoals = resultSet.getInt(8);
-                    String fullTimeResult = resultSet.getString(9);
-                    int halfTimeHomeGoals = resultSet.getInt(10);
-                    int halfTimeAwayGoals = resultSet.getInt(11);
-                    String halfTimeResult = resultSet.getString(12);
-                    String referee = resultSet.getString(13);
-                    int hs = resultSet.getInt(14);
-                    int as = resultSet.getInt(15);
-                    int hst = resultSet.getInt(16);
-                    int ast = resultSet.getInt(17);
-                    int hf = resultSet.getInt(18);
-                    int af = resultSet.getInt(19);
-                    int hc = resultSet.getInt(20);
-                    int ac = resultSet.getInt(21);
-                    int hy = resultSet.getInt(22);
-                    int ay = resultSet.getInt(23);
-                    int hrc = resultSet.getInt(24);
-                    int arc = resultSet.getInt(25);
+                    String division = resultSet.getString(1);
+                    Date date = resultSet.getDate(2);
+                    Time time = resultSet.getTime(3);
+                    String homeTeam = resultSet.getString(4);
+                    String awayTeam = resultSet.getString(5);
+                    int fullTimeHomeGoals = resultSet.getInt(6);
+                    int fullTimeAwayGoals = resultSet.getInt(7);
+                    String fullTimeResult = resultSet.getString(8);
+                    int halfTimeHomeGoals = resultSet.getInt(9);
+                    int halfTimeAwayGoals = resultSet.getInt(10);
+                    String halfTimeResult = resultSet.getString(11);
+                    String referee = resultSet.getString(12);
+                    int hs = resultSet.getInt(13);
+                    int as = resultSet.getInt(14);
+                    int hst = resultSet.getInt(15);
+                    int ast = resultSet.getInt(16);
+                    int hf = resultSet.getInt(17);
+                    int af = resultSet.getInt(18);
+                    int hc = resultSet.getInt(19);
+                    int ac = resultSet.getInt(20);
+                    int hy = resultSet.getInt(21);
+                    int ay = resultSet.getInt(22);
+                    int hrc = resultSet.getInt(23);
+                    int arc = resultSet.getInt(24);
 
                     // Create Team
                     Match match;
@@ -444,7 +446,7 @@ public class DAOManagerJDBCImpl implements DAOManager {
             // Prepare Call
             CallableStatement callableStatement = dbConnection.prepareCall(storedProcedure);
 
-            callableStatement.setString(1, oneTeam.getClub_name());
+            callableStatement.setString(1, oneTeam.getAbv());
 
             // Execute the stored procedure
             result = callableStatement.execute();
@@ -487,6 +489,8 @@ public class DAOManagerJDBCImpl implements DAOManager {
                     String abv = resultSet.getString(2);
                     String hex_code = resultSet.getString(3);
                     String logo_link = resultSet.getString(4);
+                    int redcards = resultSet.getInt(5);
+                    System.out.println(redcards);
 
                     // Create Team
                     Team team;

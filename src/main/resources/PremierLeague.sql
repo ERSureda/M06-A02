@@ -3,11 +3,10 @@ CREATE TABLE clubs (
     abv VARCHAR(3) NOT NULL,
     hex_code VARCHAR(7) NOT NULL,
     logo_link VARCHAR(255) NOT NULL,
-    PRIMARY KEY (club_name)
+    PRIMARY KEY (abv)
 );
 
 CREATE TABLE results (
-    MatchID INT AUTO_INCREMENT PRIMARY KEY,
     Division VARCHAR(255) NOT NULL,
     Date DATE NOT NULL,
     Time TIME NOT NULL,
@@ -32,8 +31,10 @@ CREATE TABLE results (
     AY INT NOT NULL,
     HRC INT NOT NULL,
     ARC INT NOT NULL,
-    FOREIGN KEY (HomeTeam) REFERENCES clubs(club_name),
-    FOREIGN KEY (AwayTeam) REFERENCES clubs(club_name)
+    PRIMARY KEY (Date, HomeTeam, AwayTeam)
+    FOREIGN KEY (HomeTeam) REFERENCES clubs(abv),
+    FOREIGN KEY (AwayTeam) REFERENCES clubs(abv),
+
 );
 
 -- Procedure - Inserts the club.
@@ -132,7 +133,7 @@ CREATE PROCEDURE get_team_most_red_cards()
 BEGIN
     SELECT c.club_name, c.abv, c.hex_code, c.logo_link, SUM(r.HRC + r.ARC) AS total_red_cards
     FROM clubs c
-    JOIN results r ON c.club_name = r.HomeTeam OR c.club_name = r.AwayTeam
+    JOIN results r ON c.abv = r.HomeTeam OR c.abv = r.AwayTeam
     GROUP BY c.club_name, c.abv, c.hex_code, c.logo_link
     ORDER BY total_red_cards DESC
     LIMIT 3;
